@@ -16,6 +16,19 @@ Setup has many steps, so an agent does it with you. Ask your coding agent:
 
 It asks one short question at a time, shows the full plan once, and then installs and configures everything. [SETUP.md](SETUP.md) is what it follows.
 
+## Running
+
+`scripts/dsh-superagent` runs the service for one DSH profile, `superagent` by default, in its own tmux session (`dsh-<profile>`) and leaves other sessions alone:
+
+```sh
+scripts/dsh-superagent start     # start, or report a running instance
+scripts/dsh-superagent status    # pids, health, setup problems, exit code
+scripts/dsh-superagent restart   # graceful restart
+scripts/dsh-superagent stop      # graceful stop; pauses automatic recovery
+```
+
+It needs `dsh` and `tmux` on `PATH`; `dsh` may come from the npm CLI or from the CLI bundled with the DeepSeek Harness desktop app. Pass `--profile` and `--url` for another profile or port, or set `DSH_SUPERAGENT_PROFILE` and `DSH_SUPERAGENT_URL`. `status`, `start` and `restart` exit 0 when the service runs normally, 1 when it is stopped, duplicated or unreachable (a restart may fix it), 2 when a part such as a Source reports an error, and 3 when it waits for setup; a restart fixes neither 2 nor 3. Logs and control files live under `.artifacts/`. [006 Deployment](docs/006-deployment.md) covers the exit codes, the configuration and troubleshooting in full.
+
 ## Documentation
 
 Read the numbered documents in order; each builds only on the ones before it.
